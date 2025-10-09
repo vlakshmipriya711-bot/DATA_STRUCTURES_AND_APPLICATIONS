@@ -1,16 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int gcd(int a, int b)
+void toh(int n,char s,char d,char t)
 {
-    if(b==0) return a;
-    return gcd(b,a%b);
+    if(n>1)
+    {
+        toh(n-1,s,t,d);
+        printf("\n move %d disc from %c to %c ",n,s,d);
+        toh(n-1,t,d,s);
+    }
+    else
+        printf("\n move %d disc from %c to %c",n,s,d);
 }
 int main()
 {
- int a,b;
- printf("\n read values for a and b:");
- scanf("%d%d",&a,&b);
- printf("\n GCD of %d and %d is %d \n",a,b,gcd(a,b));
- return 0;
+    int n;
+    printf("\n read no.of discs: ");
+    scanf("%d",&n);
+    toh(n,'S','D','T');
+    return 0;
 }
