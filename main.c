@@ -1,15 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include<ctype.h>
-#include<math.h>
-
+int gcd(int a,int b)
+{
+   if(b==0)return a;
+   return gcd(b,a%b);
+}
 int main()
    {
-      char symbol ;
-      symbol = '2';
-      if (isdigit(symbol))
-      printf("\n %d",symbol-'0');
-      else
-         printf("\n not a digit ");
-    return 0;
-}
+      int a,b;
+      printf("\n  read values of a and b: ");
+      scanf("%d%d",&a,&b);
+      printf("\n GCD of %d and %d is %d\n",a,b,gcd(a,b));
+      return 0;
+   }
+
+
