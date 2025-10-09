@@ -1,59 +1,69 @@
+// EVALUATE POSTFIX
+
 #include <stdio.h>
 #include <stdlib.h>
+#include<ctype.h>
+#include<math.h>
 #define SIZE 10
 struct stack
 {
-   int top;
-   int data[SIZE];
+    int top;
+    float data[SIZE];
 };
-typedef struct  stack STACK;
-void push(STACK *s,int item)
+
+typedef struct stack STACK;
+
+void push(STACK *s,float item)
 {
-   s->data[++(s->top)]=item;
+    s->data[++(s->top)]=item;
 }
 
-void pop(STACK*s)
+float pop(STACK *s)
 {
-   return s->data[(s->top)--];
+    return s->data[(s->top)--];
 }
 
-void display(STACK s)
+float compute(float opr1,char symbol,float opr2)
 {
-   int i;
-   for (i = 0; i<=s.top;i++)
-   printf("%d\n",s.data[i]);
+    switch(symbol)
+    {
+        case '+':return opr1+opr2;
+        case '-':return opr1-opr2;
+        case '*':return opr1*opr2;
+        case '/':return opr1/opr2;
+        case '^':return pow(opr1,opr2);
+    }
 }
 
-/*void reverse(s)
+float evaluate(STACK *s,char postfix[20])
 {
-   s.top =
-}*/
-
+    int i;
+    float opr1,opr2,res;
+    char symbol;
+    for(i=0;postfix[i]!='\0';i++)
+    {
+        symbol=postfix[i];
+        if(isdigit(symbol))
+            push(s,symbol-'0');
+        else
+        {
+            opr2=pop(s);
+            opr1=pop(s);
+            res = compute(opr1,symbol,opr2);
+            push(s,res);
+        }
+    }
+    return pop(s);
+}
 int main()
 {
-   int item,ch;
-   STACK s;
-   s.top=-1;
-   for(;;)
-   {
-
-   printf("\n option :");
-   scanf("%d",&ch);
-   switch(ch)
-   {
-   case 1:
-      printf("\n element to be pushed :");
-      scanf("%d",&item);
-      push(&s,item);
-      break;
-      case 2:
-         pop(&s);
-         break;
-      case 3:
-         display(s);
-         break;
-      default : exit(0);
-   }
-   }
-   return 0;
+char postfix[20];
+STACK s;
+s.top=-1;
+float res;
+printf("\n read postfix expression:\n ");
+scanf("%s",postfix);
+res = evaluate(&s,postfix);
+printf("\n the final result is %f \n ",res);
+return 0;
 }
