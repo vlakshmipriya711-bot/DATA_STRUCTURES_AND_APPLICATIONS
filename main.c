@@ -1,69 +1,80 @@
-// EVALUATE POSTFIX
-
 #include <stdio.h>
 #include <stdlib.h>
-#include<ctype.h>
-#include<math.h>
-#define SIZE 10
-struct stack
+#define SIZE 5
+
+struct queue
 {
-    int top;
-    float data[SIZE];
+    int r,f;
+    int data[SIZE];
 };
+typedef struct queue QUEUE;
 
-typedef struct stack STACK;
-
-void push(STACK *s,float item)
+void enqueue(QUEUE *q, int item)
 {
-    s->data[++(s->top)]=item;
-}
-
-float pop(STACK *s)
-{
-    return s->data[(s->top)--];
-}
-
-float compute(float opr1,char symbol,float opr2)
-{
-    switch(symbol)
-    {
-        case '+':return opr1+opr2;
-        case '-':return opr1-opr2;
-        case '*':return opr1*opr2;
-        case '/':return opr1/opr2;
-        case '^':return pow(opr1,opr2);
+    if (q->r== SIZE -1)
+        printf("\n Queue is full"  );
+    else{
+        q->r =q->r+1;
+        q->data[q->r]=item;
+        if(q->f==-1)
+            q->f=0;
     }
 }
 
-float evaluate(STACK *s,char postfix[20])
+void dequeue(QUEUE *q)
+{
+    if(q->f==-1)
+        printf(" \n Queue is empty");
+    else
+    {
+        printf("\n element deleted is %d\n ",q->data[q->f]);
+        if(q->f==q->r)
+        {
+            q->f=-1;
+            q->r=-1;
+        }
+        else
+            q->f=q->f+1;
+    }
+}
+
+void display(QUEUE q)
 {
     int i;
-    float opr1,opr2,res;
-    char symbol;
-    for(i=0;postfix[i]!='\0';i++)
-    {
-        symbol=postfix[i];
-        if(isdigit(symbol))
-            push(s,symbol-'0');
-        else
-        {
-            opr2=pop(s);
-            opr1=pop(s);
-            res = compute(opr1,symbol,opr2);
-            push(s,res);
-        }
+    if(q.f==-1)
+        printf("\n queue is empty");
+    else{
+        printf("\n Queue  contents are :\n");
+        for(i=q.f;i<=q.r;i++)
+            printf("%d\t",q.data[i]);
     }
-    return pop(s);
 }
+
 int main()
 {
-char postfix[20];
-STACK s;
-s.top=-1;
-float res;
-printf("\n read postfix expression:\n ");
-scanf("%s",postfix);
-res = evaluate(&s,postfix);
-printf("\n the final result is %f \n ",res);
-return 0;
+   int item,ch;
+   QUEUE q;
+   q.r=-1;
+   q.f=-1;
+   for(;;)
+   {
+       printf("\n 1.Insert\n 2.delete\n 3.Display \n 4. exit");
+       printf("\n read choice: ");
+       scanf("%d",&ch);
+       switch(ch)
+       {
+           case 1: printf("\n read element to be inserted :");
+               scanf("%d",&item);
+               enqueue(&q,item);
+               break;
+
+           case 2: dequeue(&q);
+                    break;
+           case 3: display(q);
+                break;
+          default : exit(0);
+
+       }
+   }
+   return 0;
 }
