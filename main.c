@@ -1,15 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include<ctype.h>
-#include<math.h>
 
+void toh(int n,char s,char d,char t)
+{
+    if(n>1)
+    {
+        toh(n-1,s,t,d);
+        printf("\n move %d disc from %c to %c ",n,s,d);
+        toh(n-1,t,d,s);
+    }
+    else
+        printf("\n move %d disc from %c to %c",n,s,d);
+}
 int main()
-   {
-      char symbol ;
-      symbol = '2';
-      if (isdigit(symbol))
-      printf("\n %d",symbol-'0');
-      else
-         printf("\n not a digit ");
+{
+    int n;
+    printf("\n read no.of discs: ");
+    scanf("%d",&n);
+    toh(n,'S','D','T');
     return 0;
 }
+
